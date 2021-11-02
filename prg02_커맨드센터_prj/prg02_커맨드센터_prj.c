@@ -144,4 +144,4 @@ int main(void)
     CursorView();
     game();
 }
-/*이거 커밋 가능????*/
+/*as*/
