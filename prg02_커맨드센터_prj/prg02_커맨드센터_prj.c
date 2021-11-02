@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <time.h>
+int bullet = 20; //총알 int 값
 
 gotoxy(int x, int y)
 {
@@ -18,7 +19,7 @@ gotoxy2(int x2, int y2)
 void shoot(int x)
 {
     int y;
-
+    bullet--;//총알 발사하면 줄어듬
     for (y = 10; y >= 1; y--)
     {
         gotoxy(x, y);
@@ -44,77 +45,90 @@ void game(void)
 {
     char ch;
     int x = 25, y = 24, loc; //플레이어 시작 위치 x:39 y:24 
-    int score = 0;
-    int Oldscore = 0;
+    int score = 0;//점수 int 값
+    int wall = 100; // 벽 int 값
 
     gotoxy(0, 0);
 
-    printf("┏");
+    printf("┏");//상단 오른쪽 모서리
 
-    for (int i = 1; i < 52; i++) {
+    for (int i = 1; i < 52; i++) {//왼쪽 상단줄
         printf("━");
     }
 
-    printf("┳");
+    printf("┳");//중간 표시
 
     for (int i = 53; i < 92; i++) {
-        printf("━");
+        printf("━");//오른쪽 상단줄
     }
 
-    printf("┓");
+    printf("┓");//오른쪽 상단 모서리
     
     for (int i = 1; i < 25; i++) {
         gotoxy(0, i);
-        printf("┃");
+        printf("┃");//왼쪽 세로줄
     }
     
     for (int i = 1; i < 25; i++) {
         gotoxy(52, i);
-        printf("┃");
+        printf("┃");//가운데 세로줄
     }
 
     for (int i = 1; i < 25; i++) {
         gotoxy(92, i);
-        printf("┃");
+        printf("┃");//오른쪽 세로줄
     }
 
     gotoxy(0, 25);
 
-    printf("┗");
+    printf("┗");//왼쪽 모서리
 
     for (int i = 1; i < 52; i++) {
-        printf("━");
+        printf("━");//왼쪽 하단줄
     }
 
-    printf("┻");
+    printf("┻");//하단 중단 표시
 
     for (int i = 53; i < 92; i++) {
-        printf("━");
+        printf("━");//오른쪽 하단줄
     }
-    printf("┛");
+    printf("┛");//하단 왼쪽 모서리
 
     gotoxy(60, 3);
-    printf("score : %d", score);
-
+    printf("점수 : %d", score); // 화면상 점수 표시
+    gotoxy(60, 6);
+    printf("총알 : %d / 100", bullet); // 총알의 수 표시
+    gotoxy(60, 9);
+    printf("벽의 내구성 :% d / 100", wall);// 벽의 내구성 표시
+    gotoxy(60, 19);
+    printf("<- : 왼쪽으로 이동");//조작법
+    gotoxy(60, 21);
+    printf("<- : 오른쪽으로 이동");//조작법
+    gotoxy(60, 23);
+    printf("s : 총알발사");//조작법
     loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
 
     while (1)
     {
         gotoxy(60, 3);
-        printf("score : %d", score);
-
+        printf("점수 : %d", score); // 화면상 점수 표시
+        gotoxy(60, 6);
+        printf("총알 : %d / 100", bullet); // 총알의 수 표시
+        gotoxy(60, 9);
+        printf("벽의 내구성 :% d / 100", wall);// 벽의 내구성 표시
         gotoxy(x, y);
         printf("[★]"); //플레이어 표시 
         ch = getch();
 
-        Oldscore = score; // 몬스터를 처치하면 스코어 상승
+ 
 
 
         if (ch == 's')
         {
             shoot(x);
             if (loc == x) {
-                score += 10;
+                score += 10;//적에 총알이 닿으면 점수의 표시가 10올라감
+                bullet += 3;//적에 총알이 닿으면 총알의 표시가 3올라감
                 loc = target();
             }
         }
@@ -151,8 +165,8 @@ void game(void)
                 break;
             }
         }
-        gotoxy(x, y);
-        printf("[@]");
+        gotoxy(x, y);//플레이어 현제위치
+        printf("[@]");//플레이어 표시
     }
 }
 
