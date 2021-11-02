@@ -1,5 +1,3 @@
-// 熱薑 1
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -59,14 +57,32 @@ void game(void)
     int Oldscore = 0;
 
     gotoxy(0, 0);
-    for (int i = 0; i < 53; i++) {
-        printf("式");
+
+    printf("旨");
+
+    for (int i = 1; i < 52; i++) {
+        printf("收");
+    }
+    printf("旬");
+    
+    for (int i = 1; i < 25; i++) {
+        gotoxy(0, i);
+        printf("早");
+    }
+    
+    for (int i = 1; i < 25; i++) {
+        gotoxy(52, i);
+        printf("早");
     }
 
     gotoxy(0, 25);
-    for (int i = 0; i < 53; i++) {
-        printf("式");
+
+    printf("曲");
+
+    for (int i = 1; i < 52; i++) {
+        printf("收");
     }
+    printf("旭");
 
     gotoxy(55, 0);
     printf("score : %d", score);
@@ -144,4 +160,3 @@ int main(void)
     CursorView();
     game();
 }
-/*as*/
