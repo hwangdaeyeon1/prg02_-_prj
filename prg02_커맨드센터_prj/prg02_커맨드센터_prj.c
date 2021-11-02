@@ -1,4 +1,5 @@
-//
+// ¼öÁ¤ 1
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
@@ -37,7 +38,7 @@ int target(void)
     int y2 = 2;
     gotoxy2(x2, y2);
     printf("@");
-
+    
     /*for (y2 = 2; y2 <= 24; y2++)
     {
         gotoxy(x2, y2);
