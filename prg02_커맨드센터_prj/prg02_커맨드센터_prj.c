@@ -56,7 +56,7 @@ void shoot(int x)
 {
     int y;
     bullet--;//총알 발사하면 줄어듬
-    for (y = 10; y >= 1; y--)
+    for (y = 22; y >= 1; y--)
     {
         gotoxy(x, y);
         printf("|"); //화살이 x좌표에서 위로 날아감 
