@@ -36,15 +36,6 @@ int target(void)
     int y2 = 2;
     gotoxy2(x2, y2);
     printf("@");
-    
-    /*for (y2 = 2; y2 <= 24; y2++)
-    {
-        gotoxy(x2, y2);
-        printf("@"); //화살이 x좌표에서 위로 날아감 
-        Sleep(100);
-        gotoxy(x2, y2);
-        printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
-    }*/
 
     return x2;
 }
@@ -63,6 +54,13 @@ void game(void)
     for (int i = 1; i < 52; i++) {
         printf("━");
     }
+
+    printf("┳");
+
+    for (int i = 53; i < 92; i++) {
+        printf("━");
+    }
+
     printf("┓");
     
     for (int i = 1; i < 25; i++) {
@@ -75,6 +73,11 @@ void game(void)
         printf("┃");
     }
 
+    for (int i = 1; i < 25; i++) {
+        gotoxy(92, i);
+        printf("┃");
+    }
+
     gotoxy(0, 25);
 
     printf("┗");
@@ -82,20 +85,26 @@ void game(void)
     for (int i = 1; i < 52; i++) {
         printf("━");
     }
+
+    printf("┻");
+
+    for (int i = 53; i < 92; i++) {
+        printf("━");
+    }
     printf("┛");
 
-    gotoxy(55, 0);
+    gotoxy(60, 3);
     printf("score : %d", score);
 
     loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
 
     while (1)
     {
-        gotoxy(55, 0);
+        gotoxy(60, 3);
         printf("score : %d", score);
 
         gotoxy(x, y);
-        printf("[@]"); //플레이어 표시 
+        printf("[★]"); //플레이어 표시 
         ch = getch();
 
         Oldscore = score; // 몬스터를 처치하면 스코어 상승
