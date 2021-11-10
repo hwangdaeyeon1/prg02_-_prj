@@ -63,8 +63,7 @@ void shoot(int x)
 
     board[y][x] = 'l';
     bullet--;//총알 발사하면 줄어듬
-    for (y = 22; y >= 1; y--)
-    {
+
         gotoxy(x, y);
         board[y][x] = 'l';
         printf("%c", board[y][x]); //화살이 x좌표에서 위로 날아감 
@@ -72,7 +71,7 @@ void shoot(int x)
         gotoxy(x, y);
         printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
         board[y][x] = ' ';
-    }
+   
 }
 
 int target(void)
@@ -158,27 +157,50 @@ void game(void)
     gotoxy(60, 23);
     printf("s : 총알발사");//조작법
     loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
-
+    int T = 0;
+    int a = 100;
+    int s_x;
     while (1)
     {
         gotoxy(60, 3);
-        printf("점수 : %d", score); // 화면상 점수 표시
+        printf("점수 : %d", T); // 화면상 점수 표시
         gotoxy(60, 6);
         printf("총알 : %d / 100", bullet); // 총알의 수 표시
         gotoxy(60, 9);
         printf("벽의 내구성 :% d / 100", wall);// 벽의 내구성 표시
         gotoxy(x, y);
         printf("@"); //플레이어 표시 
+        
         ch = getch();
 
-        if (ch == 's')
-        {
-            shoot(x);
-            if (loc == x) {
-                score += 100;//적에 총알이 닿으면 점수의 표시가 10올라감
-                bullet += 3;//적에 총알이 닿으면 총알의 표시가 3올라감
-                loc = target();
+
+        T++;//T 설정
+        if (T % 2 == 0) {
+            if (ch == 's')
+            {
+                s_x = x;
+                a = 22;
+                shoot(x);
+                if (loc == x) {
+                    score += 100;//적에 총알이 닿으면 점수의 표시가 10올라감
+                    bullet += 3;//적에 총알이 닿으면 총알의 표시가 3올라감
+                    loc = target();
+                }
             }
+            if (a < 23) {
+                a--;
+                gotoxy(s_x, a);
+                board[a][s_x] = 'l';
+                printf("%c", board[a][s_x]); //화살이 x좌표에서 위로 날아감 
+                Sleep(10);
+                gotoxy(s_x, a);
+                printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
+                board[a][s_x] = ' ';
+                if (a < 0) {
+                    a = 100;
+                }
+            }
+            
         }
 
         switch (ch)
