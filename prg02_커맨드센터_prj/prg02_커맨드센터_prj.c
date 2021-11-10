@@ -3,6 +3,9 @@
 #include <windows.h>
 #include <time.h>
 
+#define WIDTH   52
+#define HEIGHT  25
+
 /*
 체크리스트
 
@@ -39,6 +42,7 @@
 */
 
 int bullet = 20; //총알 int 값
+char board[HEIGHT][WIDTH];
 
 gotoxy(int x, int y)
 {
@@ -46,35 +50,40 @@ gotoxy(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-gotoxy2(int x2, int y2)
-{
-    COORD pos = { x2 , y2 };
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
-}
-
 void shoot(int x)
 {
-    int y;
+    int y = 22;
+    
+    /*for (y = 22; y >= 1; y--) {
+        gotoxy(x, y);
+        printf("|");
+        Sleep(20);
+    }
+    return;*/
+
+    board[y][x] = 'l';
     bullet--;//총알 발사하면 줄어듬
     for (y = 22; y >= 1; y--)
     {
         gotoxy(x, y);
-        printf("|"); //화살이 x좌표에서 위로 날아감 
-        Sleep(20);
+        board[y][x] = 'l';
+        printf("%c", board[y][x]); //화살이 x좌표에서 위로 날아감 
+        Sleep(50);
         gotoxy(x, y);
         printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
+        board[y][x] = ' ';
     }
 }
 
 int target(void)
 {
     int num = 0;
-    int x2 = rand() % 51;
-    int y2 = 2;
-    gotoxy2(x2, y2);
+    int x = rand() % 51;
+    int y = 2;
+    gotoxy(x, y);
     printf("@");
 
-    return x2;
+    return x;
 }
 
 void game(void)
