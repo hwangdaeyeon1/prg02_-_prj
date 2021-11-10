@@ -54,13 +54,6 @@ gotoxy(int x, int y)
 void shoot(int x)
 {
     int y = 22;
-    
-    /*for (y = 22; y >= 1; y--) {
-        gotoxy(x, y);
-        printf("|");
-        Sleep(20);
-    }
-    return;*/
 
     board[y][x] = 'l';
     bullet--;//총알 발사하면 줄어듬
@@ -72,7 +65,6 @@ void shoot(int x)
         gotoxy(x, y);
         printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
         board[y][x] = ' ';
-   
 }
 
 int target(void)
@@ -82,7 +74,7 @@ int target(void)
     int x = rand() % 51;
     int y = 2;
     gotoxy(x, y);
-    printf("@");
+    printf("1");
 
     return x;
 }
@@ -161,15 +153,20 @@ void game(void)
     loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
     int T = 0;
     int a = 100;
-    int s_x;
+    int b = 0;
     while (1)
     {
         gotoxy(60, 3);
-        printf("점수 : %d", T); // 화면상 점수 표시
+        printf("점수 : %d", score); // 화면상 점수 표시
         gotoxy(60, 6);
         printf("총알 : %d / 100", bullet); // 총알의 수 표시
         gotoxy(60, 9);
         printf("벽의 내구성 :% d / 100", wall);// 벽의 내구성 표시
+        gotoxy(60, 12);
+        if (T % 5 == 0) {
+            printf("시간 :% d", T / 5);// 시간 표시
+        }
+        
         gotoxy(x, y);
         printf("@"); //플레이어 표시
 
@@ -179,14 +176,11 @@ void game(void)
             ch = _getch();
             if (ch == 's')
             {
-                s_x = x;
+                b = x;
                 a = 22;
+
                 shoot(x);
-                if (loc == x) {
-                    score += 100;//적에 총알이 닿으면 점수의 표시가 10올라감
-                    bullet += 3;//적에 총알이 닿으면 총알의 표시가 3올라감
-                    loc = target();
-                }
+                
             }
             switch (ch)
             {
@@ -209,20 +203,23 @@ void game(void)
         }
         if (a < 23) {
             a--;
-            gotoxy(s_x, a);
-            board[a][s_x] = 'l';
-            printf("%c", board[a][s_x]); //화살이 x좌표에서 위로 날아감 
+            gotoxy(b, a);
+            board[a][b] = 'l';
+            printf("%c", board[a][b]); //화살이 x좌표에서 위로 날아감 
             Sleep(10);
-            gotoxy(s_x, a);
+            gotoxy(b, a);
             printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
-            board[a][s_x] = ' ';
+            board[a][b] = ' ';
             if (a < 2) {
                 a = 100;
             }
+
         }
-        
-        
-            
+        if (loc == b && a == 2) {
+            score += 100;//적에 총알이 닿으면 점수의 표시가 10올라감
+            bullet += 3;//적에 총알이 닿으면 총알의 표시가 3올라감
+            loc = target();
+        }
     }
 }
 
