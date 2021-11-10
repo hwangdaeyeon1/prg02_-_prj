@@ -188,20 +188,6 @@ void game(void)
                     loc = target();
                 }
             }
-            if (a < 23) {
-                a--;
-                gotoxy(s_x, a);
-                board[a][s_x] = 'l';
-                printf("%c", board[a][s_x]); //화살이 x좌표에서 위로 날아감 
-                Sleep(10);
-                gotoxy(s_x, a);
-                printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
-                board[a][s_x] = ' ';
-                if (a < 2) {
-                    a = 100;
-                }
-            }
-
             switch (ch)
             {
             case 75:
@@ -219,6 +205,19 @@ void game(void)
                     printf("  ");
                     break;
                 }
+            }
+        }
+        if (a < 23) {
+            a--;
+            gotoxy(s_x, a);
+            board[a][s_x] = 'l';
+            printf("%c", board[a][s_x]); //화살이 x좌표에서 위로 날아감 
+            Sleep(10);
+            gotoxy(s_x, a);
+            printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
+            board[a][s_x] = ' ';
+            if (a < 2) {
+                a = 100;
             }
         }
         
