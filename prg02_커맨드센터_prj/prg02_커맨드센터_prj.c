@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <windows.h>
 #include <time.h>
+#include <conio.h>
 
 #define WIDTH   52
 #define HEIGHT  25
@@ -76,7 +77,8 @@ void shoot(int x)
 
 int target(void)
 {
-    int num = 0;
+    srand((unsigned int)time(NULL));
+
     int x = rand() % 51;
     int y = 2;
     gotoxy(x, y);
@@ -169,13 +171,12 @@ void game(void)
         gotoxy(60, 9);
         printf("벽의 내구성 :% d / 100", wall);// 벽의 내구성 표시
         gotoxy(x, y);
-        printf("@"); //플레이어 표시 
-        
-        ch = getch();
-
+        printf("@"); //플레이어 표시
 
         T++;//T 설정
-        if (T % 2 == 0) {
+        Sleep(20);
+        if (_kbhit()) {
+            ch = _getch();
             if (ch == 's')
             {
                 s_x = x;
@@ -196,31 +197,33 @@ void game(void)
                 gotoxy(s_x, a);
                 printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
                 board[a][s_x] = ' ';
-                if (a < 0) {
+                if (a < 2) {
                     a = 100;
                 }
             }
+
+            switch (ch)
+            {
+            case 75:
+                if (x > 2) {
+                    x--; // 방향키 ← 
+                    gotoxy(x + 1, y);
+                    printf("  ");
+                    break;
+                }
+
+            case 77:
+                if (x < 50) {
+                    x++; //방향키 →
+                    gotoxy(x - 1, y);
+                    printf("  ");
+                    break;
+                }
+            }
+        }
+        
+        
             
-        }
-
-        switch (ch)
-        {
-        case 75:
-            if (x > 2) {
-                x--; // 방향키 ← 
-                gotoxy(x + 1, y);
-                printf("  ");
-                break;
-            }
-
-        case 77:
-            if (x < 50) {
-                x++; //방향키 →
-                gotoxy(x - 1, y);
-                printf("  ");
-                break;
-            }
-        }
     }
 }
 
