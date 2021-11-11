@@ -41,7 +41,8 @@
 
 체크리스트 달성률 60% (6 / 10)
 */
-
+int c;
+int c1;
 int bullet = 20; //총알 int 값
 char board[HEIGHT][WIDTH];
 
@@ -51,30 +52,33 @@ gotoxy(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-void shoot(int x)
-{
-    int y = 22;
-
-    board[y][x] = 'l';
-    bullet--;//총알 발사하면 줄어듬
-}
-
 int target(void)
 {
     srand((unsigned int)time(NULL));
 
-    int x = rand() % 51;
+    int x = (rand() % 50) + 2;
     int y = 2;
     gotoxy(x, y);
-    printf("1");
-
+    printf("0");
+    c = y;
     return x;
 }
+int target1(void)
+{
+    srand((unsigned int)time(NULL)/2);
+    int x = (rand() % 50) + 2;
+    int y = 8;
+    gotoxy(x, y);
+    printf("1");
+    c1 = y;
+    return x;
+}
+
 
 void game(void)
 {
     char ch;
-    int x = 25, y = 23, loc; //플레이어 시작 위치
+    int x = 25, y = 23, loc, loc1; //플레이어 시작 위치
     int score = 0;//점수 int 값
     int wall = 100; // 벽 int 값
 
@@ -135,7 +139,7 @@ void game(void)
     gotoxy(60, 6);
     printf("총알 : %d / 100", bullet); // 총알의 수 표시
     gotoxy(60, 9);
-    printf("벽의 내구성 :% d / 100", wall);// 벽의 내구성 표시
+    printf("HP :% d / 100", wall);// HP 표시
     gotoxy(60, 19);
     printf("<- : 왼쪽으로 이동");//조작법
     gotoxy(60, 21);
@@ -143,9 +147,11 @@ void game(void)
     gotoxy(60, 23);
     printf("s : 총알발사");//조작법
     loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
+  
     int T = 0;
     int a = 100;
     int b = 0;
+    int e1 = 0;
     while (1)
     {
         gotoxy(60, 3);
@@ -153,16 +159,18 @@ void game(void)
         gotoxy(60, 6);
         printf("총알 : %d / 100", bullet); // 총알의 수 표시
         gotoxy(60, 9);
-        printf("벽의 내구성 :% d / 100", wall);// 벽의 내구성 표시
+        printf("HP :% d / 100", wall);// HP 표시
         gotoxy(60, 12);
-        if (T % 5 == 0) {
-            printf("시간 :% d", T / 5);// 시간 표시
-        }
+        printf("시간 :% d", T);// 시간 표시
+      
         
         gotoxy(x, y);
         printf("@"); //플레이어 표시
 
         T++;//T 설정
+        if (T == 300) {
+            loc1 = target1();
+        }
         Sleep(20);
         if (_kbhit()) {
             ch = _getch();
@@ -171,9 +179,7 @@ void game(void)
             {
                 b = x;
                 a = 22;
-
-                shoot(x);
-                
+                bullet--;//총알 발사하면 줄어듬
             }
             }
             switch (ch)
@@ -189,30 +195,74 @@ void game(void)
             case 77:
                 if (x < 50) {
                     x++; //방향키 →
-                    gotoxy(x - 1, y);
+                    gotoxy(x -1, y);
                     printf("  ");
                     break;
                 }
             }
         }
+
+        //총알
         if (a < 23) {
             a--;
             gotoxy(b, a);
             board[a][b] = 'l';
-            printf("%c", board[a][b]); //화살이 x좌표에서 위로 날아감 
+            printf("%c", board[a][b]); //총알이 x좌표에서 위로 날아감 
             Sleep(10);
             gotoxy(b, a);
-            printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
+            printf(" "); //총알이 지나간 위치에는 공백으로 지워줌 
             board[a][b] = ' ';
             if (a < 2) {
                 a = 100;
             }
 
         }
-        if (loc == b && a == 2) {
-            score += 100;//적에 총알이 닿으면 점수의 표시가 10올라감
+
+        //적("0")
+        if(T % 20 == 1){
+        gotoxy(loc, c - 1);
+        printf(" ");
+        Sleep(5);
+        gotoxy(loc, c++);
+        printf("0");
+        if (c == 24) {
+            Sleep(20);
+            gotoxy(loc, c - 1);
+            printf(" ");
+            loc = target();
+            wall -= 5;
+        }
+        }
+        if (loc == b && a == c) {
+            score += 10;//적에 총알이 닿으면 점수의 표시가 10올라감
             bullet += 3;//적에 총알이 닿으면 총알의 표시가 3올라감
             loc = target();
+        }
+        //적("1")
+        if(T>300){
+            if (T % 30 == 1) {
+                gotoxy(loc1, c1 - 1);
+                printf(" ");
+                Sleep(5);
+                gotoxy(loc1, c1++);
+                printf("1");
+                if (c1 == 24) {
+                    Sleep(20);
+                    gotoxy(loc1, c1 - 1);
+                    printf(" ");
+                    loc1 = target1();
+                    wall -= 10;
+                }
+            }
+            if (loc1 == b && a == c1) {
+                e1++;
+                if(e1 >= 2){
+                    score += 20;//적에 총알이 닿으면 점수의 표시가 20올라감
+                    bullet += 3;//적에 총알이 닿으면 총알의 표시가 3올라감
+                    loc1 = target1();
+                    e1 = 0;
+                }
+            }
         }
     }
 }
