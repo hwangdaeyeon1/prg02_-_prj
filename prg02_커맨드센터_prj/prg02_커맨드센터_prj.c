@@ -57,14 +57,6 @@ void shoot(int x)
 
     board[y][x] = 'l';
     bullet--;//총알 발사하면 줄어듬
-
-        gotoxy(x, y);
-        board[y][x] = 'l';
-        printf("%c", board[y][x]); //화살이 x좌표에서 위로 날아감 
-        Sleep(50);
-        gotoxy(x, y);
-        printf(" "); //화살이 지나간 위치에는 공백으로 지워줌 
-        board[y][x] = ' ';
 }
 
 int target(void)
@@ -174,6 +166,7 @@ void game(void)
         Sleep(20);
         if (_kbhit()) {
             ch = _getch();
+            if(a > 50){//a가 50 이상일 떄 총알이 안나간다.
             if (ch == 's')
             {
                 b = x;
@@ -181,6 +174,7 @@ void game(void)
 
                 shoot(x);
                 
+            }
             }
             switch (ch)
             {
