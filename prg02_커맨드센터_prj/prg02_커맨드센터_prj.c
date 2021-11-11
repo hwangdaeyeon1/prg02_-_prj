@@ -43,7 +43,7 @@
 */
 int c;
 int c1;
-int bullet = 20; //총알 int 값
+
 char board[HEIGHT][WIDTH];
 
 gotoxy(int x, int y)
@@ -56,7 +56,7 @@ int target(void)
 {
     srand((unsigned int)time(NULL));
 
-    int x = (rand() % 50) + 2;
+    int x = (rand() % 49) + 2;
     int y = 2;
     gotoxy(x, y);
     printf("0");
@@ -66,7 +66,7 @@ int target(void)
 int target1(void)
 {
     srand((unsigned int)time(NULL)/2);
-    int x = (rand() % 50) + 2;
+    int x = (rand() % 49) + 2;
     int y = 8;
     gotoxy(x, y);
     printf("1");
@@ -81,7 +81,7 @@ void game(void)
     int x = 25, y = 23, loc, loc1; //플레이어 시작 위치
     int score = 0;//점수 int 값
     int wall = 100; // 벽 int 값
-
+    int bullet = 20; //총알 int 값
     gotoxy(0, 0);
 
     printf("┏");//상단 오른쪽 모서리
@@ -177,6 +177,7 @@ void game(void)
             if(a > 50){//a가 50 이상일 떄 총알이 안나간다.
             if (ch == 's')
             {
+   
                 b = x;
                 a = 22;
                 bullet--;//총알 발사하면 줄어듬
@@ -264,6 +265,7 @@ void game(void)
                 }
             }
         }
+
     }
 }
 
@@ -279,4 +281,5 @@ int main(void)
 {
     CursorView();
     game();
+    return 0;
 }
