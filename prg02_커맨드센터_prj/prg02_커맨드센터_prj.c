@@ -126,50 +126,84 @@ void opening() {
     printf("시간이 지날수록 강한 적이 등장합니다!");
     Sleep(1200);
 
-    gotoxy(8, 6);
+    gotoxy(8, 5);
     printf("몬스터 ""0,"" ""v ""는 한 발만 맞춰도 죽일 수 있습니다!");
-    gotoxy(56, 6);
+    gotoxy(56, 5);
     printf("몬스터 ""1 ""은 두 발을 맞춰서 죽일 수 있습니다!");
     Sleep(1200);
 
-    gotoxy(25, 9);
+    gotoxy(25, 7);
     printf("몬스터 ""0,"" ""1,"" ""v"" 를 죽이면 총알과 체력을 얻을 수 있습니다!");
     Sleep(1200);
 
-    gotoxy(12, 12);
+    gotoxy(12, 9);
     printf("시간이 지나면 최종 보스가 나타납니다.");
-    gotoxy(51, 12);
+    gotoxy(51, 9);
     printf("최종 보스는 여러 번 공격해야 죽일 수 있습니다!");
     Sleep(1200);
 
-    gotoxy(19, 15);
+    gotoxy(19, 11);
     printf("총을 연사하면 쏘면 명중률이 떨어져");
-    gotoxy(55, 15);
+    gotoxy(55, 11);
     printf("멀리 있는 적을 맞출 수 없게 됩니다!");
     Sleep(1200);
 
+    gotoxy(28, 13);
+    printf("총알 혹은 플레이어 HP가 0이 되면 패배하게 됩니다!");
+    Sleep(1200);
 
-    gotoxy(28, 19);
-    printf("====  게임을 시작하시겠습니까? Enter를 눌러주세요!  =====");
-    Sleep(1000);
+    int start = 1;
+
+    while (start) {
+        gotoxy(19, 16);
+        printf("====  난이도를 골라주세요! EASY : (e)   NORMAL : (n)  HARD : (h) ======");
+        switch (_getch())
+        {
+        case 'e': boss_hp = 30;
+            start = 0;
+            break;
+        case 'E': boss_hp = 30;
+            start = 0;
+            break;
+        case 'n': boss_hp = 50;
+            start = 0;
+            break;
+        case 'N': boss_hp = 50;
+            start = 0;
+            break;
+        case 'h': boss_hp = 100;
+            start = 0;
+            break;
+        case 'H': boss_hp = 100;
+            start = 0;
+            break;
+        }
+    }
+
+    gotoxy(20, 16);
+    printf("========     게임을 시작하시겠습니까? Enter를 눌러주세요!     ========");
+    Sleep(700);
 
     while(_getch() != '\r'){
     }
 
-    gotoxy(28, 19);
-    printf("========        잠시후 게임이 시작됩니다!        ========");
+    gotoxy(20, 16);
+    printf("========              잠시후 게임이 시작됩니다!               ========");
     Sleep(1000);
-    gotoxy(28, 19);
-    printf("========                    3                    ========");
+    gotoxy(20, 16);
+    printf("========                          3                           ========");
     Sleep(1000);
-    gotoxy(28, 19);
-    printf("========                    2                    ========");
+    gotoxy(20, 16);
+    printf("========                          2                           ========");
     Sleep(1000);
-    gotoxy(28, 19);
-    printf("========                    1                    ========");
+    gotoxy(20, 16);
+    printf("========                          1                           ========");
     Sleep(1000);
-    gotoxy(28, 19);
-    printf("========            게임을 시작합니다            ========");
+    gotoxy(20, 16);
+    printf("========                          0                           ========");
+    Sleep(1000);
+    gotoxy(20, 16);
+    printf("========                  게임을 시작합니다!                  ========");
 
     Sleep(1500);
     system("cls");
@@ -296,13 +330,15 @@ void gameover() {
 void game(void)
 {
     char ch;
-    int x = 25, y = 23, loc_b = 0, loc_ba = 0, loc, loc1; //플레이어 시작 위치
+    int x = 25, y = 23, loc_ba = 0, loc, loc1; //플레이어 시작 위치
+    // loc, loc1 : 적("0", "1")의 x좌표     loc_ba : 보스 화살의 x좌표
 
     int wall = 50; // HP int 값
     int bullet = 20; //총알 int 값
     int a = 100; // 총알 y값
     int b = 0;   // 총알 x값
     int e1 = 0;  // 적("1")의 체력(총알을 맞은 횟수)
+    int boss_starthp = boss_hp; // 난이도 조건을 위한 값
 
     gotoxy(0, 0);
 
@@ -375,8 +411,6 @@ void game(void)
         gotoxy(60, 9);
         printf("플레이어 HP :% d / 50 ", wall);// HP 표시
         
-        gotoxy(71 + boss_hp / 3 * 2, 12); // 보스체력에서 3씩 감소될 때마다 ■ 하나 줄어듦.
-        printf("  ");
 
         gotoxy(x, y);
         printf("@"); //플레이어 표시
@@ -387,17 +421,44 @@ void game(void)
         }
 
         // 게임시간이 300을 초과하면 보스 화살 생성
-        if (T > 300 && T_b == 0) {
+        if (T == 300) {
             loc_ba = boss_a();
             T_b++; // 보스 ON
         }
+        // T_b == 1 반복을 위한 조건문
         if (T_b == 1) {
-            loc_b = boss(); // 보스 생성
+            boss(); // 보스 생성
             gotoxy(60, 12);
-            printf("보스 HP :");// 보스 HP 표시. 보스의 HP는 30이며 3씩 ■를 그려 10개의 ■로 체력을 표현
-            for (int i = 0; i < boss_hp / 3; i++) {
-                gotoxy(70 + i * 2, 12);
-                printf("■");
+            printf("보스 HP :");// 보스 HP 표시. 체력 10 당 ■로 표현
+            if (boss_starthp < 31) {
+                for (int i = 0; i < boss_hp / 3; i++) {
+                    gotoxy(70 + i * 2, 12);
+                    printf("■");
+                }
+                gotoxy(71 + boss_hp / 3 * 2, 12); // 보스체력에서 3씩 감소될 때마다 ■ 하나 줄어듦.
+                printf("  ");
+                gotoxy(70, 14);
+                printf("보스HP : %d  ", boss_hp);
+            }
+            else if(boss_starthp < 51) {
+                for (int i = 0; i < boss_hp / 5; i++) {
+                    gotoxy(70 + i * 2, 12);
+                    printf("■");
+                }
+                gotoxy(71 + boss_hp / 5 * 2, 12); // 보스체력에서 5씩 감소될 때마다 ■ 하나 줄어듦.
+                printf("  ");
+                gotoxy(70, 14);
+                printf("보스HP : %d  ", boss_hp);
+            }
+            else {
+                for (int i = 0; i < boss_hp / 10; i++) {
+                    gotoxy(70 + i * 2, 12);
+                    printf("■");
+                }
+                gotoxy(71 + boss_hp / 10 * 2, 12); // 보스체력에서 10씩 감소될 때마다 ■ 하나 줄어듦.
+                printf("  ");
+                gotoxy(70, 14);
+                printf("보스HP : %d  ", boss_hp);
             }
         }
 
@@ -476,13 +537,12 @@ void game(void)
                 wall = 50;
             }
             bullet += 2;//적을 맞추면 2발 장전
-            // 총알은 최대 30발까지 채울 수 있다
+            // 총알은 최대 20발까지 채울 수 있다
             if (bullet > 20) {
                 bullet = 20;
             }
             loc = target();
         }
-
 
         //적("1")
         if (T > 150) {
@@ -550,7 +610,7 @@ void game(void)
             }
         }
         // 보스가 있을때 
-        if (loc_b > 0) {
+        if (T_b > 0) {
             // 플레이어 총알의 x값이 20~40이고 y값이 cb(보스 히트박스y값)이면 보스 HP 감소
             if (b > 19 && b < 41 && a == cb_hit) {
                 boss_hp--;
@@ -561,7 +621,7 @@ void game(void)
                     gotoxy(60, 3);
                     printf("점수 : %d ", score); // 점수 표시
                     gotoxy(60, 12);
-                    printf("보스 HP :");// 보스 HP 표시. 보스의 HP는 30이며 3씩 ■를 그려 10개의 ■로 체력을 표현
+                    printf("보스 HP :");// 보스 HP 표시. 체력 10 당 ■로 표현
                     gotoxy(70, 12);
                     printf("    ");
 
@@ -592,8 +652,6 @@ void game(void)
 
                         Sleep(1000/i);
                     }
-                    
-                    //T_b++;
                 }
             }
         }
