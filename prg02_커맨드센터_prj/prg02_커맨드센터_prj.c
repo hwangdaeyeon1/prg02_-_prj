@@ -437,8 +437,6 @@ void game(void)
                 }
                 gotoxy(71 + boss_hp / 3 * 2, 12); // 보스체력에서 3씩 감소될 때마다 ■ 하나 줄어듦.
                 printf("  ");
-                gotoxy(70, 14);
-                printf("보스HP : %d  ", boss_hp);
             }
             else if(boss_starthp < 51) {
                 for (int i = 0; i < boss_hp / 5; i++) {
@@ -447,8 +445,6 @@ void game(void)
                 }
                 gotoxy(71 + boss_hp / 5 * 2, 12); // 보스체력에서 5씩 감소될 때마다 ■ 하나 줄어듦.
                 printf("  ");
-                gotoxy(70, 14);
-                printf("보스HP : %d  ", boss_hp);
             }
             else {
                 for (int i = 0; i < boss_hp / 10; i++) {
@@ -457,8 +453,6 @@ void game(void)
                 }
                 gotoxy(71 + boss_hp / 10 * 2, 12); // 보스체력에서 10씩 감소될 때마다 ■ 하나 줄어듦.
                 printf("  ");
-                gotoxy(70, 14);
-                printf("보스HP : %d  ", boss_hp);
             }
         }
 
