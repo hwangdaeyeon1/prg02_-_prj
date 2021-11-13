@@ -10,6 +10,7 @@
 
 char board[HEIGHT][WIDTH]; // 플레이어 게임판
 int boss_hp = 30; // 보스 HP
+int boss_starthp = 30; // 난이도 설정을 위한 장치
 int score = 0;//점수 int 값
 int T = 0;    // 시간
 int T_b = 0, cb_hit, cb_a, c, c1;
@@ -64,7 +65,6 @@ int target1(void) // 두 번째 적("1")
 
 int boss(void) // 보스
 {
-
     gotoxy(20, 2);
     printf("＾── ＾");
     gotoxy(20, 3);
@@ -159,19 +159,19 @@ void opening() {
         printf("====  난이도를 골라주세요! EASY : (e)   NORMAL : (n)  HARD : (h) ======");
         switch (_getch())
         {
-        case 'e': boss_hp = 30;
+        case 'e': boss_hp = 30; // EASY 난이도 보스 체력 : 30
             start = 0;
             break;
         case 'E': boss_hp = 30;
             start = 0;
             break;
-        case 'n': boss_hp = 50;
+        case 'n': boss_hp = 50; // NORMAL 난이도 보스 체력 : 50
             start = 0;
             break;
         case 'N': boss_hp = 50;
             start = 0;
             break;
-        case 'h': boss_hp = 100;
+        case 'h': boss_hp = 100; // HARD 난이도 보스 체력 : 100
             start = 0;
             break;
         case 'H': boss_hp = 100;
@@ -258,9 +258,21 @@ void gamewin() {
         printf("               ■■      ■        ■  ■        ■  ■        ■  ■■■■■■  ■      ■■            ");//
         gotoxy(3, 15);
         printf("               ■■      ■■■■■■  ■■■■■■  ■        ■  ■■■■■■  ■      ■■            ");//
-        gotoxy(30, 20);
+        if (boss_starthp == 30) {
+            gotoxy(25, 20);
+            printf("난이도 : EASY");
+        }
+        else if (boss_starthp == 50) {
+            gotoxy(25, 20);
+            printf("난이도 : NORMAL");
+        }
+        else {
+            gotoxy(25, 20);
+            printf("난이도 : HARD");
+        }
+        gotoxy(45, 20);
         printf("최종 점수 : %d점 ", score);
-        gotoxy(60, 20);
+        gotoxy(70, 20);
         printf("플레이 타임 : %d ", T);
         Sleep(700);
     }
@@ -338,7 +350,7 @@ void game(void)
     int a = 100; // 총알 y값
     int b = 0;   // 총알 x값
     int e1 = 0;  // 적("1")의 체력(총알을 맞은 횟수)
-    int boss_starthp = boss_hp; // 난이도 조건을 위한 값
+    boss_starthp = boss_hp; // 난이도 조건을 위한 값
 
     gotoxy(0, 0);
 
@@ -392,23 +404,37 @@ void game(void)
     }
     printf("┛");//하단 왼쪽 모서리
 
-    gotoxy(60, 16);
+    if (boss_starthp == 30) {
+        gotoxy(60, 3);
+        printf("난이도 : E A S Y");
+    }
+    else if (boss_starthp == 50) {
+        gotoxy(60, 3);
+        printf("난이도 : N O R M A L");
+    }
+    else {
+        gotoxy(60, 3);
+        printf("난이도 : H A R D");
+    }
+
+    gotoxy(60, 19);
     printf("<- : 왼쪽으로 이동");//조작법
-    gotoxy(60, 18);
+    gotoxy(60, 21);
     printf("<- : 오른쪽으로 이동");//조작법
-    gotoxy(60, 20);
+    gotoxy(60, 23);
     printf("S  : 공격");//조작법
     loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
 
     while (1)
     {
         CursorView();
-        gotoxy(60, 3);
+
+        gotoxy(60, 6);
         printf("점수 : %d        ", score); // 점수 표시
         printf("시간 : %d ", T); // 시간 표시
-        gotoxy(60, 6);
-        printf("총알 : %d / 30 ", bullet); // 총알 수 표시
         gotoxy(60, 9);
+        printf("총알 : %d / 20 ", bullet); // 총알 수 표시
+        gotoxy(60, 12);
         printf("플레이어 HP :% d / 50 ", wall);// HP 표시
         
 
@@ -418,42 +444,6 @@ void game(void)
         // 게임시간이 150이 되면 적("1") 생성
         if (T == 150) {
             loc1 = target1();
-        }
-
-        // 게임시간이 300을 초과하면 보스 화살 생성
-        if (T == 300) {
-            loc_ba = boss_a();
-            T_b++; // 보스 ON
-        }
-        // T_b == 1 반복을 위한 조건문
-        if (T_b == 1) {
-            boss(); // 보스 생성
-            gotoxy(60, 12);
-            printf("보스 HP :");// 보스 HP 표시. 체력 10 당 ■로 표현
-            if (boss_starthp < 31) {
-                for (int i = 0; i < boss_hp / 3; i++) {
-                    gotoxy(70 + i * 2, 12);
-                    printf("■");
-                }
-                gotoxy(71 + boss_hp / 3 * 2, 12); // 보스체력에서 3씩 감소될 때마다 ■ 하나 줄어듦.
-                printf("  ");
-            }
-            else if(boss_starthp < 51) {
-                for (int i = 0; i < boss_hp / 5; i++) {
-                    gotoxy(70 + i * 2, 12);
-                    printf("■");
-                }
-                gotoxy(71 + boss_hp / 5 * 2, 12); // 보스체력에서 5씩 감소될 때마다 ■ 하나 줄어듦.
-                printf("  ");
-            }
-            else {
-                for (int i = 0; i < boss_hp / 10; i++) {
-                    gotoxy(70 + i * 2, 12);
-                    printf("■");
-                }
-                gotoxy(71 + boss_hp / 10 * 2, 12); // 보스체력에서 10씩 감소될 때마다 ■ 하나 줄어듦.
-                printf("  ");
-            }
         }
 
         T++;//T 설정
@@ -574,6 +564,45 @@ void game(void)
                 }
             }
         }
+
+
+        // 게임시간이 300을 초과하면 보스 화살 생성
+        if (T == 300) {
+            loc_ba = boss_a();
+            T_b++; // 보스 ON
+        }
+
+        // T_b == 1 반복을 위한 조건문
+        if (T_b == 1) {
+            boss(); // 보스 생성
+            gotoxy(60, 15);
+            printf("보스 HP :");// 보스 HP 표시. 체력 10 당 ■로 표현
+            if (boss_starthp == 30) {
+                for (int i = 0; i < boss_hp / 3; i++) {
+                    gotoxy(70 + i * 2, 15);
+                    printf("■");
+                }
+                gotoxy(71 + boss_hp / 3 * 2, 15); // 보스체력에서 3씩 감소될 때마다 ■ 하나 줄어듦.
+                printf("  ");
+            }
+            else if (boss_starthp == 50) {
+                for (int i = 0; i < boss_hp / 5; i++) {
+                    gotoxy(70 + i * 2, 15);
+                    printf("■");
+                }
+                gotoxy(71 + boss_hp / 5 * 2, 15); // 보스체력에서 5씩 감소될 때마다 ■ 하나 줄어듦.
+                printf("  ");
+            }
+            else {
+                for (int i = 0; i < boss_hp / 10; i++) {
+                    gotoxy(70 + i * 2, 15);
+                    printf("■");
+                }
+                gotoxy(71 + boss_hp / 10 * 2, 15); // 보스체력에서 10씩 감소될 때마다 ■ 하나 줄어듦.
+                printf("  ");
+            }
+        }
+
         //보스 화살
         if (loc_ba > 0) {
             if (T % 13 == 1) {
@@ -612,11 +641,11 @@ void game(void)
                 if (boss_hp < 1) {
 
                     score += 5000;
-                    gotoxy(60, 3);
+                    gotoxy(60, 6);
                     printf("점수 : %d ", score); // 점수 표시
-                    gotoxy(60, 12);
+                    gotoxy(60, 15);
                     printf("보스 HP :");// 보스 HP 표시. 체력 10 당 ■로 표현
-                    gotoxy(70, 12);
+                    gotoxy(70, 15);
                     printf("    ");
 
                     for (int i = 1; i < 10; i++) {
