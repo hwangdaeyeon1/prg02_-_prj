@@ -83,7 +83,7 @@ int boss_a(void) // 보스 화살
 {
     //srand((unsigned int)time(NULL) / 5);
     srand((int)time(NULL));
-
+    
     int x = (rand() % 49) + 2;
     int y = 8;
     gotoxy(x, y);
@@ -427,24 +427,18 @@ void game(void)
 
     while (1)
     {
-        CursorView();
+        CursorView(); // 커서 안 보이게 설정
 
         gotoxy(60, 6);
         printf("점수 : %d        ", score); // 점수 표시
-        printf("시간 : %d ", T); // 시간 표시
+        printf("시간 : %d ", T); // 시간 표시 + 적들이 아래로 내려오는 주기를 다르게 하여 속도 조절 v > 0 > 1
         gotoxy(60, 9);
         printf("총알 : %d / 20 ", bullet); // 총알 수 표시
         gotoxy(60, 12);
         printf("플레이어 HP :% d / 50 ", wall);// HP 표시
-        
 
         gotoxy(x, y);
         printf("@"); //플레이어 표시
-
-        // 게임시간이 150이 되면 적("1") 생성
-        if (T == 150) {
-            loc1 = target1();
-        }
 
         T++;//T 설정
         
@@ -456,7 +450,6 @@ void game(void)
             if (a > 50 || a < 5) {//a가 50 이상일 때 총알이 못 쏨.(연타 불가능)
                 if (ch == 's')
                 {
-
                     b = x;
                     a = 23;
                     bullet--;//총알 발사하면 줄어듬
@@ -528,9 +521,14 @@ void game(void)
             loc = target();
         }
 
-        //적("1")
+        // 게임시간이 150이 되면 적("1") 생성
+        if (T == 150) {
+            loc1 = target1();
+        }
+
+        //적("1") : 체력 2
         if (T > 150) {
-            if (T % 31 == 1) {
+            if (T % 35 == 1) {
                 gotoxy(loc1, c1 - 1);
                 printf(" ");
                 Sleep(3);
@@ -603,7 +601,7 @@ void game(void)
             }
         }
 
-        //보스 화살
+        //보스 화살 : 제일 빠른 속도
         if (loc_ba > 0) {
             if (T % 13 == 1) {
                 gotoxy(loc_ba, cb_a - 1);
@@ -632,7 +630,7 @@ void game(void)
                 loc_ba = boss_a();
             }
         }
-        // 보스가 있을때 
+        // 보스가 있을때 피격 조건
         if (T_b > 0) {
             // 플레이어 총알의 x값이 20~40이고 y값이 cb(보스 히트박스y값)이면 보스 HP 감소
             if (b > 19 && b < 41 && a == cb_hit) {
@@ -692,7 +690,7 @@ int main(void)
     system("cls");
     game();
     system("cls");
-    //game()이 break 되었을 때 보스를 잡은 경우 승리 화면을 보여준다.
+    //game()이 break 되고 보스를 잡은 경우 승리 화면을 보여준다.
     if (boss_hp <= 0) {
         gamewin();
     }
