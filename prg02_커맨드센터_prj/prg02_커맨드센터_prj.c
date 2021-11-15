@@ -563,7 +563,6 @@ void game(void)
             }
         }
 
-
         // 게임시간이 500을 초과하면 보스 화살 생성
         if (T == 500) {
             loc_ba = boss_a();
