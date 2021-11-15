@@ -491,7 +491,7 @@ void game(void)
         }
 
         //Àû("0")
-        if (T % 22 == 1) {
+        if (T % 19 == 1) {
             gotoxy(loc, c - 1);
             printf(" ");
             Sleep(8);
@@ -662,7 +662,7 @@ void game(void)
                         gotoxy(20, 2);
                         printf("£Þ¦¡¦¡ £Þ");
                         gotoxy(20, 3);
-                        printf("¨Û¥ø¨Û£¢£¢£¢£¢£¢");
+                        printf("¨ä¥ø¨ä£¢£¢£¢£¢£¢");
                         gotoxy(20, 4);
                         printf("£¢               £¢");
                         gotoxy(20, 5);
