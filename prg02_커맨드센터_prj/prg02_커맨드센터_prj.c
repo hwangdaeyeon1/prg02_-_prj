@@ -81,7 +81,6 @@ int boss(void) // 보스
 
 int boss_a(void) // 보스 화살
 {
-    //srand((unsigned int)time(NULL) / 5);
     srand((int)time(NULL));
     
     int x = (rand() % 49) + 2;
@@ -126,36 +125,30 @@ void opening() {
     printf("시간이 지날수록 강한 적이 등장합니다!");
     Sleep(1200);
 
-    gotoxy(8, 5);
+    gotoxy(8, 6);
     printf("몬스터 ""0,"" ""v ""는 한 발만 맞춰도 죽일 수 있습니다!");
-    gotoxy(56, 5);
+    gotoxy(56, 6);
     printf("몬스터 ""1 ""은 두 발을 맞춰서 죽일 수 있습니다!");
     Sleep(1200);
 
-    gotoxy(25, 7);
+    gotoxy(25, 9);
     printf("몬스터 ""0,"" ""1,"" ""v"" 를 죽이면 총알과 체력을 얻을 수 있습니다!");
     Sleep(1200);
 
-    gotoxy(12, 9);
+    gotoxy(12, 12);
     printf("시간이 지나면 최종 보스가 나타납니다.");
-    gotoxy(51, 9);
+    gotoxy(51, 12);
     printf("최종 보스는 여러 번 공격해야 죽일 수 있습니다!");
     Sleep(1200);
 
-    gotoxy(19, 11);
-    printf("총을 연사하면 쏘면 명중률이 떨어져");
-    gotoxy(55, 11);
-    printf("멀리 있는 적을 맞출 수 없게 됩니다!");
-    Sleep(1200);
-
-    gotoxy(28, 13);
+    gotoxy(28, 15);
     printf("총알 혹은 플레이어 HP가 0이 되면 패배하게 됩니다!");
     Sleep(1200);
 
     int start = 1;
 
     while (start) {
-        gotoxy(19, 16);
+        gotoxy(19, 18);
         printf("====  난이도를 골라주세요! EASY : (e)   NORMAL : (n)  HARD : (h) ======");
         switch (_getch())
         {
@@ -180,29 +173,29 @@ void opening() {
         }
     }
 
-    gotoxy(20, 16);
+    gotoxy(20, 18);
     printf("========     게임을 시작하시겠습니까? Enter를 눌러주세요!     ========");
     Sleep(700);
 
     while(_getch() != '\r'){
     }
 
-    gotoxy(20, 16);
+    gotoxy(20, 18);
     printf("========              잠시후 게임이 시작됩니다!               ========");
     Sleep(1000);
-    gotoxy(20, 16);
+    gotoxy(20, 18);
     printf("========                          3                           ========");
     Sleep(1000);
-    gotoxy(20, 16);
+    gotoxy(20, 18);
     printf("========                          2                           ========");
     Sleep(1000);
-    gotoxy(20, 16);
+    gotoxy(20, 18);
     printf("========                          1                           ========");
     Sleep(1000);
-    gotoxy(20, 16);
+    gotoxy(20, 18);
     printf("========                          0                           ========");
     Sleep(1000);
-    gotoxy(20, 16);
+    gotoxy(20, 18);
     printf("========                  게임을 시작합니다!                  ========");
 
     Sleep(1500);
@@ -672,11 +665,35 @@ void game(void)
 
                         Sleep(1000/i);
                     }
+
+                    break;
                 }
             }
         }
         // 총알이 0 미만이 되거나 플레이어 HP가 1 미만이 되거나 보스의 HP가 0 이하가 되었을 때 게임 종료
-        if (bullet < 0 || wall < 1 || boss_hp < 1) {
+        if (bullet < 0 || wall < 1) {
+            for (int i = 1; i < 10; i++) {
+                gotoxy(1, 24);
+                for (int j = 1; j < 52; j++) {
+                    printf(" ");//벽
+                }
+
+                gotoxy(x, y);
+                printf(" "); //플레이어 표시
+
+                Sleep(1000 / i);
+
+                gotoxy(1, 24);
+
+                for (int j = 1; j < 52; j++) {
+                    printf("*");//벽
+                }
+
+                gotoxy(x, y);
+                printf("@"); //플레이어 표시
+
+                Sleep(1000 / i);
+            }
             break;
         }
     }
