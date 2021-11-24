@@ -492,7 +492,7 @@ void game(void)
                 Sleep(20);
                 gotoxy(loc, c - 1);
                 printf(" ");
-                wall -= 11; // HP 10 감소
+                wall -= 11; // HP 11 감소
                 loc = target(); // 적생성
 
             }
@@ -529,7 +529,7 @@ void game(void)
                     Sleep(20);
                     gotoxy(loc1, c1 - 1);
                     printf(" ");
-                    wall -= 15; //HP 10 감소
+                    wall -= 15; //HP 15 감소
                     e1 = 0; //적이 다시 생성될 때 적의 체력을 초기화
                     loc1 = target1();
                 }
@@ -603,7 +603,7 @@ void game(void)
                     Sleep(20);
                     gotoxy(loc_ba, cb_a - 1);
                     printf(" ");
-                    wall -= 18;        // 보스 화살에 맞으면 HP - 20
+                    wall -= 18;        // 보스 화살에 맞으면 HP - 18
                     loc_ba = boss_a(); // 보스 화살의 x값
                 }
             }
