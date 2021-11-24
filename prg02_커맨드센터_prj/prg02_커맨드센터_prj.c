@@ -333,7 +333,7 @@ void gameover() {
 void game(void)
 {
     char ch;
-    int x = 25, y = 23, loc_ba = 0, loc, loc1; //플레이어 시작 위치
+    int x = 25, y = 23, loc_ba = 0, loc, loc1 = 0; //플레이어 시작 위치
     // loc, loc1 : 적("0", "1")의 x좌표     loc_ba : 보스 화살의 x좌표
 
     int wall = 50; // HP int 값
@@ -342,6 +342,27 @@ void game(void)
     int b = 0;   // 총알 x값
     int e1 = 0;  // 적("1")의 체력(총알을 맞은 횟수)
     boss_starthp = boss_hp; // 난이도 조건을 위한 값
+
+    if (boss_starthp == 30) {
+        gotoxy(60, 3);
+        printf("난이도 : E A S Y");
+    }
+    else if (boss_starthp == 50) {
+        gotoxy(60, 3);
+        printf("난이도 : N O R M A L");
+    }
+    else {
+        gotoxy(60, 3);
+        printf("난이도 : H A R D");
+    }
+
+    gotoxy(60, 19);
+    printf("<- : 왼쪽으로 이동");//조작법
+    gotoxy(60, 21);
+    printf("<- : 오른쪽으로 이동");//조작법
+    gotoxy(60, 23);
+    printf("S  : 공격");//조작법
+    loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
 
     gotoxy(0, 0);
 
@@ -394,27 +415,6 @@ void game(void)
         printf("━");//오른쪽 하단줄
     }
     printf("┛");//하단 왼쪽 모서리
-
-    if (boss_starthp == 30) {
-        gotoxy(60, 3);
-        printf("난이도 : E A S Y");
-    }
-    else if (boss_starthp == 50) {
-        gotoxy(60, 3);
-        printf("난이도 : N O R M A L");
-    }
-    else {
-        gotoxy(60, 3);
-        printf("난이도 : H A R D");
-    }
-
-    gotoxy(60, 19);
-    printf("<- : 왼쪽으로 이동");//조작법
-    gotoxy(60, 21);
-    printf("<- : 오른쪽으로 이동");//조작법
-    gotoxy(60, 23);
-    printf("S  : 공격");//조작법
-    loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
 
     while (1)
     {
@@ -556,8 +556,8 @@ void game(void)
 
         // 게임시간이 500을 초과하면 보스 화살 생성
         if (T == 500) {
-            loc_ba = boss_a();
             T_b++; // 보스 ON
+            loc_ba = boss_a();
         }
 
         // T_b == 1 반복을 위한 조건문
