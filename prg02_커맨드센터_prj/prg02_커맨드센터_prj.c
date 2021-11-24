@@ -33,7 +33,6 @@ void CursorView() // 커서 숨기기
 
 int target(void) // 첫 번째 적("0")
 {
-    //srand((unsigned int)time(NULL));
     srand((int)time(NULL));
 
     int x = ((rand() * 37) % 49) + 2;
@@ -53,7 +52,6 @@ int target(void) // 첫 번째 적("0")
 
 int target1(void) // 두 번째 적("1")
 {
-    //srand((unsigned int)time(NULL) / 2);
     srand((int)time(NULL));
     int x = ((rand() * 29) % 49) + 2;
     int y = 8;
