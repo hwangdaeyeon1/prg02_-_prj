@@ -102,7 +102,7 @@ void opening() {
         gotoxy(0, i);
         printf("┃");//왼쪽 세로줄
     }
-
+    
     for (int i = 1; i < 25; i++) {
         gotoxy(108, i);
         printf("┃");//오른쪽 세로줄
@@ -426,7 +426,7 @@ void game(void)
         gotoxy(60, 9);
         printf("총알 : %d / 20 ", bullet); // 총알 수 표시
         gotoxy(60, 12);
-        printf("플레이어 HP :% d / 50 ", wall);// HP 표시
+        printf("플레이어 HP : %d / 50 ", wall);// HP 표시
 
         gotoxy(x, y);
         printf("@"); //플레이어 표시
@@ -670,6 +670,10 @@ void game(void)
         }
         // 총알이 0 미만이 되거나 플레이어 HP가 1 미만이 되거나 보스의 HP가 0 이하가 되었을 때 게임 종료
         if (bullet < 0 || wall < 1) {
+            if (wall < 1) {
+                gotoxy(60, 12);
+                printf("플레이어 HP : 0 / 50 ", wall);// HP 표시
+            }
             for (int i = 1; i < 10; i++) {
                 gotoxy(1, 24);
                 for (int j = 1; j < 52; j++) {
