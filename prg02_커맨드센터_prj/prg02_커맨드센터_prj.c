@@ -672,7 +672,7 @@ void game(void)
         if (bullet < 0 || wall < 1) {
             if (wall < 1) {
                 gotoxy(60, 12);
-                printf("플레이어 HP : 0 / 50 ", wall);// HP 표시
+                printf("플레이어 HP : 0 / 50 ");// HP 표시
             }
             for (int i = 1; i < 10; i++) {
                 gotoxy(1, 24);
