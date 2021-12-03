@@ -359,7 +359,7 @@ void game(void)
     gotoxy(60, 19);
     printf("<- : 왼쪽으로 이동");//조작법
     gotoxy(60, 21);
-    printf("<- : 오른쪽으로 이동");//조작법
+    printf("-> : 오른쪽으로 이동");//조작법
     gotoxy(60, 23);
     printf("S  : 공격");//조작법
     loc = target(); // 최초 목표물 생성 + 목표물 x좌표 반환
